@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>jquery+css实现抽奖机</title>
+	<style type="text/css">
+		div {
+			background-color: #333333;
+			width: 100%;
+			height: 500px;
+		}
+		table {
+			width: 300px;
+			height: 300px;
+			text-align: center;
+			margin:auto auto;
+			padding-top:70px;
+		}
+		table td {
+			width: 100px;
+			height: 100px;
+			background-color: white!important;
+			margin-left:5px!important;
+		/*	border: 1px solid black;*/
+		}
+		#lottery {
+			background-color:#58C4EE!important;
+		}
+
+		#lottery:hover {
+			background-color: black!important;
+			color: white;
+			cursor: pointer;
+		}
+		.active {
+			background-color: #F44336!important;
+			box-shadow: 0 0 16px 5px rgba(44,154,219,1);
+			/*rgba(44,154,219,.8);*/
+ 
+		}
+	</style>
+	<script type="text/javascript" src="jquery-1.11.1.min.js"></script>
+</head>
+<body>
+	<div>
+		<table id="turntable">
+			<tbody>
+				<tr>
+					<td style="background-color:blue" data-index="1" >1</td>
+					<td style="background-color:red" data-index="2" >2</td>
+					<td style="background-color:yellow" data-index="3" >3</td>
+				</tr>
+				<tr>
+					<td style="background-color:orange" data-index="8">4</td>
+					<td id="lottery" style="background-color:pink">抽奖</td>
+					<td style="background-color:#40B9B9" data-index="4">6</td>
+				</tr>
+				<tr>
+					<td style="background-color:#5F34AF" data-index="7">7</td>
+					<td style="background-color:#957698" data-index="6">8</td>
+					<td style="background-color:#12DB43" data-index="5">9</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<script type="text/javascript">
+		var IsRun = 0;
+		function order(time) {
+			IsRun = 1;
+			var active = $(".active");
+			var curIndex = active.data("index");
+			var total = $("td").length - 1;
+			var nextTime = time + 5 * time / 50;
+			var nextIndex = null;
+			if (curIndex == total || active.length == 0) {
+				nextIndex = 1;
+			} else {
+				nextIndex = Number(curIndex) + 1;
+			}
+			active.removeClass("active");
+			var nextItem = $("td[data-index="+nextIndex+"]");
+			nextItem.addClass("active");
+			if (time > 800) {
+				var info = nextItem.text();
+				alert("恭喜你抽中:"+info);
+				IsRun = 0;
+			} else {
+				setTimeout(function(){order(nextTime)}, time);
+			}
+		}
+		$("#lottery").click(function(event) {
+			/* Act on the event */
+			var t = Math.random() * 50;
+			var time = parseInt(t);
+			if (IsRun == 0) {
+				order(time);
+			} else {
+				alert("正在抽奖,点击无效");
+			}
+		});
+		
+
+		// $("#lottery").animate({
+		// 	param1: value1,
+		// 	param2: value2},
+		// 	speed, function() {
+		// 	/* stuff to do after animation is complete */
+		// });
+	</script>
+</body>
+</html>
