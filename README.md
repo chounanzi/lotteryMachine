@@ -1,2 +1,2 @@
 # lotteryMachine
-jquery实现抽奖机
+jquery+css实现抽奖机
